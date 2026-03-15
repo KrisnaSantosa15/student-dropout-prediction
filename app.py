@@ -223,66 +223,36 @@ def render_single_prediction(
     threshold: float,
 ) -> None:
     st.markdown("### Prediksi Individual")
-    st.caption(
-        "Isi fitur utama, fitur lain akan diisi otomatis dari nilai representatif data historis.")
-
     defaults = build_default_row(labeled_data, expected_columns)
-    reverse_course = {v: k for k, v in COURSE_LABELS.items()}
 
     with st.form("single_prediction_form"):
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            course_label = st.selectbox(
-                "Course", sorted(COURSE_LABELS.values()))
-            gender_label = st.selectbox("Gender", ["Female", "Male"])
-            scholarship_label = st.selectbox(
-                "Scholarship Holder", ["No", "Yes"])
-        with c2:
-            tuition_label = st.selectbox("Tuition Fees Up To Date", [
-                                         "Not up to date", "Up to date"])
-            age = st.number_input("Age at Enrollment",
-                                  min_value=16, max_value=80, value=20)
-            admission_grade = st.number_input(
-                "Admission Grade",
-                min_value=0.0,
-                max_value=200.0,
-                value=130.0,
-                step=0.1,
-            )
-        with c3:
-            sem1_grade = st.number_input(
-                "Curricular Units 1st Sem Grade",
-                min_value=0.0,
-                max_value=20.0,
-                value=12.0,
-                step=0.1,
-            )
-            sem2_grade = st.number_input(
-                "Curricular Units 2nd Sem Grade",
-                min_value=0.0,
-                max_value=20.0,
-                value=12.0,
-                step=0.1,
-            )
-            debtor_label = st.selectbox("Debtor", ["No", "Yes"])
-
+        input_df = pd.DataFrame([defaults])[expected_columns]
+        edited_df = st.data_editor(
+            input_df,
+            use_container_width=True,
+            hide_index=True,
+            num_rows="fixed",
+        )
         submitted = st.form_submit_button("Prediksi Risiko")
 
     if not submitted:
         return
 
-    row = defaults.copy()
-    row["Course"] = reverse_course.get(course_label, 171)
-    row["Gender"] = 0 if gender_label == "Female" else 1
-    row["Scholarship_holder"] = 1 if scholarship_label == "Yes" else 0
-    row["Tuition_fees_up_to_date"] = 1 if tuition_label == "Up to date" else 0
-    row["Age_at_enrollment"] = int(age)
-    row["Admission_grade"] = float(admission_grade)
-    row["Curricular_units_1st_sem_grade"] = float(sem1_grade)
-    row["Curricular_units_2nd_sem_grade"] = float(sem2_grade)
-    row["Debtor"] = 1 if debtor_label == "Yes" else 0
+    scoring_df = edited_df[expected_columns].copy()
+    for col in expected_columns:
+        if pd.api.types.is_numeric_dtype(labeled_data[col]):
+            scoring_df[col] = pd.to_numeric(scoring_df[col], errors="coerce")
 
-    scoring_df = pd.DataFrame([row])[expected_columns]
+    invalid_cols = scoring_df.columns[scoring_df.isna().any()].tolist()
+    if invalid_cols:
+        st.error(
+            "Terdapat nilai kosong/tidak valid pada kolom: "
+            + ", ".join(invalid_cols)
+            + "."
+        )
+        return
+
+    row = scoring_df.iloc[0].to_dict()
     score = float(model.predict_proba(scoring_df)[:, 1][0])
     pred = int(score >= threshold)
     risk_level = score_to_risk_level(score)

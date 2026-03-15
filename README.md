@@ -118,11 +118,14 @@ Output prediksi akan menambahkan kolom:
 	- Status pembayaran kuliah (`Tuition_fees_up_to_date`): siswa dengan status pembayaran tidak up to date memiliki risiko dropout yang lebih tinggi.
 	- Performa akademik semester awal: nilai `Curricular_units_1st_sem_grade` dan `Curricular_units_2nd_sem_grade` yang lebih rendah berkaitan kuat dengan peningkatan risiko dropout.
 	- Program studi (`Course`): dropout rate tidak merata antar program studi, dengan beberapa program memiliki tingkat risiko jauh lebih tinggi.
-	- Demografi tertentu (contoh gender dan kelompok usia): terdapat perbedaan dropout rate antarkelompok, sehingga intervensi perlu berbasis segmen.
+	- Faktor finansial terkait tunggakan (`Debtor`): siswa dengan status debtor memiliki dropout rate lebih tinggi dibanding non-debtor.
+	- Demografi tertentu (terutama usia masuk kuliah): terdapat perbedaan dropout rate antarkelompok, sehingga intervensi perlu berbasis segmen.
 5. Karakteristik umum siswa dropout yang teridentifikasi:
-	- Lebih sering muncul pada siswa dengan skor akademik semester 1 dan 2 yang rendah.
-	- Proporsinya lebih tinggi pada siswa dengan status pembayaran kuliah bermasalah.
-	- Cenderung terkonsentrasi pada kelompok program studi berisiko tinggi.
+	- Profil akademik lemah pada fase awal: rata-rata nilai `Curricular_units_1st_sem_grade` = **7.26** dan `Curricular_units_2nd_sem_grade` = **5.90**, lebih rendah dari kelompok non-dropout (masing-masing **12.24** dan **12.28**).
+	- Pola kegagalan semester 2 sangat terlihat: median `Curricular_units_2nd_sem_grade` pada siswa dropout adalah **0.0**, sedangkan pada non-dropout **12.75**.
+	- Kerentanan finansial lebih tinggi: dropout rate pada siswa dengan `Tuition_fees_up_to_date = 0` mencapai **86.6%**, jauh di atas siswa dengan pembayaran up to date (**24.7%**).
+	- Cenderung berusia lebih tua saat masuk: rata-rata `Age_at_enrollment` siswa dropout **26.07** (median **23**) vs non-dropout **21.94** (median **19**).
+	- Terkonsentrasi pada program studi tertentu dengan dropout rate tertinggi, misalnya Course `33` (66.7%), `9130` (55.3%), `9119` (54.1%), dan `9991` (50.7%).
 6. Kombinasi dashboard interaktif + prediksi risiko dapat difungsikan sebagai early warning system untuk intervensi akademik yang lebih cepat dan terukur.
 
 ### Rekomendasi Action Items
