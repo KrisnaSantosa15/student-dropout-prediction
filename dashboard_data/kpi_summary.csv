@@ -1,0 +1,5 @@
+metric,value
+total_student,4424.0
+dropout_count,1421.0
+non_dropout_count,3003.0
+dropout_rate,0.3212025316455696
