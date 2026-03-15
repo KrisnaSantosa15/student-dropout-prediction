@@ -60,11 +60,7 @@ Prediksi batch dari CSV:
 python prediction.py --input sample_prediction_input.csv --output prediction_output.csv
 ```
 
-Notebook analisis:
-
-```bash
-jupyter notebook notebook.ipynb
-```
+Notebook analisis ada di `notebook.ipynb` untuk eksplorasi data dan insight EDA.
 
 Dashboard Streamlit:
 
@@ -92,22 +88,6 @@ Langkah menjalankan aplikasi (lokal):
 streamlit run app.py
 ```
 
-Setelah berjalan, aplikasi dapat diakses melalui:
-1. Local URL: `http://localhost:8501`
-
-### Deployment Prototype (Streamlit Cloud)
-
-Sesuai ketentuan submission, prototype telah disiapkan untuk dideploy ke Streamlit Cloud.
-
-Langkah singkat deployment:
-1. Push folder `Proyek Akhir` ke repository GitHub.
-2. Buka Streamlit Cloud: https://share.streamlit.io.
-3. Pilih repository, branch, dan file utama: `app.py`.
-4. Klik `Deploy`.
-
-Tautan prototype online (isi dengan URL hasil deploy Anda):
-1. `https://<nama-aplikasi-anda>.streamlit.app`
-
 Prediksi batch dari CSV:
 
 ```bash
@@ -118,6 +98,10 @@ Output prediksi akan menambahkan kolom:
 1. `dropout_prediction` (0/1)
 2. `dropout_risk_score` (probabilitas)
 3. `dropout_risk_label` (`High Risk`/`Low Risk`)
+
+
+## Link Streamlit Cloud
+[https://student-dropout-prediction-dicoding.streamlit.app/](https://student-dropout-prediction-dicoding.streamlit.app/)
 
 
 ## Conclusion
